@@ -1,4 +1,4 @@
-const db = require('./database/index.js')
+const db = require('../4.database/index.js')
 
 module.exports = {
     getList: (req,res) =>{

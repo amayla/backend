@@ -163,4 +163,10 @@ module.exports = {
     
 }
 
+sekarang create react app
 
+PASTIKAN PATH KAMU ADA DI FOLDER YANG SESUAI (todolist BUKAN BACKEND!!!!)
+
+install axios, bootstrap
+
+di index html jangan lupa taro link bootstrapnya (sebelum head)
