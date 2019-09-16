@@ -33,11 +33,25 @@ class App extends React.Component{
         <tr>
           <td>{idx + 1}</td>
           <td>{val.action}</td> 
+          <td><input onClick= {() => this.onBtnDeleteHandler(val.id)} type="button" className='btn btn-outline-danger' value='Delete'/></td>
+          {/* anonym function gunanya berhubungan dengan onBtnDeleteHandler yaa */}
           {/* properties didapat dari tabel */}
         </tr>
       )
     })
     return jsx
+  }
+
+  onBtnDeleteHandler = (id) => {
+    Axios.delete(urlApi + 'deletetodo/'+ id)
+    .then(res => {
+      this.getDataApi()
+      console.log(res)
+    })
+    .catch (err => {
+      console.log(err)
+      alert('Cannot delete action')
+    })
   }
 
   onBtnAddHandler = () => {
@@ -63,6 +77,7 @@ class App extends React.Component{
             <tr>
               <th>No.</th>
               <th>Action</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -71,7 +86,7 @@ class App extends React.Component{
           <tfoot>
             <tr>
               <td><input type='text' onChange={e => this.setState({inputToDo: e.target.value})} className='form-control'/></td>
-              <td><input type='text' value='add to do' className='btn btn-primary'/></td>
+              <td><input type='button' value='add to do' onClick={this.onBtnAddHandler} className='btn btn-primary'/></td>
               <td></td>
             </tr>
           </tfoot>
