@@ -5,11 +5,17 @@ const urlApi = `http://localhost:8080/`
 
 class App extends React.Component{
   state = {
-    data : [
+    data : [],
+    inputToDo: ''
 
-    ]
+
   }
   componentDidMount(){
+    this.getDataApi()
+  }
+
+
+  getDataApi = () => {
     Axios.get(urlApi + 'getList')
     .then(res => {
       this.setState({data: res.data})
@@ -18,6 +24,7 @@ class App extends React.Component{
       console.log(err)
       alert('System Error')
     })
+
   }
 
   renderTodo = () => {
@@ -33,6 +40,21 @@ class App extends React.Component{
     return jsx
   }
 
+  onBtnAddHandler = () => {
+    let newAction = {
+      action: this.state.inputToDo
+    }
+    Axios.post(urlApi + 'addToDo', newAction)
+    .then(res => {
+      this.getDataApi()
+      console.log(res)
+    })
+    .catch (err => {
+      console.log(err)
+      alert('Cannot add action')
+    })
+  }
+
   render(){
     return(
       <div className= 'container'>
@@ -46,6 +68,13 @@ class App extends React.Component{
           <tbody>
             {this.renderTodo()}
           </tbody>
+          <tfoot>
+            <tr>
+              <td><input type='text' onChange={e => this.setState({inputToDo: e.target.value})} className='form-control'/></td>
+              <td><input type='text' value='add to do' className='btn btn-primary'/></td>
+              <td></td>
+            </tr>
+          </tfoot>
         </table>
 
       </div>
