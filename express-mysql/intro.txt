@@ -1,0 +1,60 @@
+on terminal : npm init
+
+untuk start server pakai nodemon. kalau error dia akan restart server
+untuk mac apabila bermasalah installnya pakai sudo npm install -g nodemon
+npm install express mysqljs/mysql cors body-parser
+
+var express = require('express');
+var app = express()
+
+******di index.js*****************
+
+ 
+
+app.use(bodyParser.json())
+app.use(cors())
+//callbck function yang menerima function sebagai variabel
+app.listen(port,() => console.log('listening...'))
+
+
+******di terminal********
+nodemon . 
+
+
+***********create folder dengan nama database, dalamnya create index.js***************
+import mysql from "mysql"
+
+
+
+const db = mysql.createConnection({
+    user:'root', dari workbench
+    password:'12345678', dr workbench
+    database:'latihan_jc10',nama skema yg dibuat di mysql
+    host:"localhost"
+})
+
+module.exports = db
+
+
+
+untuk post data ke database:
+app.post('/postuser',(req,res) => {
+    let { username,email,role} = req.body (ori nya req.body.username)
+    db.query(`insert into users values(0,'${username}','${email}','${role}')`,(err, result) =>{
+        karena tipe data yang di set di mysql adalah varchar, makannya dia harus dikasih ''
+        if(err) throw err;
+        res.send(result)
+    })  
+})
+
+di postman:
+
+buka http://localhost:2019/postuser di post 
+
+bagian body, ganti ke JSON kalo json harus " "
+
+{
+	"username": "larasati",
+	"email"	: "lara@amail.com",
+	"role":"user"
+}

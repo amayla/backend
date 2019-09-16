@@ -1,0 +1,166 @@
+CRUDE
+
+Create
+Read
+Update
+Delete
+
+app.get('/', (req,res) =>
+res.send(<h1>Selamat datang di API todo JC 10</h1>))
+
+ke browser
+
+untuk get data
+
+app.get('/getlist',(req,res) =>{
+    db.query(`select * from todo`)
+}
+
+in index.js database:
+var mysql = require('mysql')
+
+const db = mysql.createConnection({
+    user:"root",
+    password: "12345678",
+    database:'todo_jc10',
+    host:'localhost'
+})
+
+module.exports = db
+
+index.js:
+var express = require('express');
+var app = express()
+var bodyParser = require('body-parser')
+var cors = require ('cors')
+const port = 8080
+const db = require('./database')
+app.use(bodyParser())
+app.use(cors())
+
+app.get('/', (req,res) =>{
+    res.send(`<h1>Selamat datang di API todo JC 10</h1>`)
+}
+)
+
+app.get('/getlist',(req,res) =>{
+    db.query(`select * from todo`, (err,result)=>{
+        if(err)throw err
+        res.send(result)
+    })
+}
+
+app.listen(port,console.log('listening in port' + port))
+
+
+express is javascript backend framework
+
+di workbench create new schema, and then new table with the following column header
+id INT NN AI
+action NN
+iscompleted TINYINT(1) default 0
+
+
+set workspace di backend, pas mau jalanin todoAPI, type cd todoAPI
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+senin, 16 sept 2019
+
+memisahkan perintah dalam file controller: todoControllers.js
+
+const db = require('./database/index.js')
+
+module.exports = {
+    getList: (req,res) =>{
+        db.query(`select * from todo`, (err,result)=>{
+            if(err) throw err
+            res.send(result)
+        })
+    }
+}
+
+lalu di index.js kita import
+const todoControllers = require('./1.controllers/todoControllers')
+
+di index.js line 17 kita panggil 
+app.get('/getlist', todoControllers.getList)
+
+
+sekarang, pisahkan semua controllers
+
+index.js kita jadi seperti ini :
+
+var express = require('express');
+var app = express()
+var bodyParser = require('body-parser')
+var cors = require ('cors')
+const port = 8080
+const todoControllers = require('./1.controllers/todoControllers')
+
+app.use(bodyParser())
+app.use(cors())
+
+app.get('/', (req,res) =>{
+    res.send(`<h1>Selamat datang di API todo JC 10</h1>`)
+}
+)
+
+app.get('/getlist', todoControllers.getList)
+
+app.post('/addtodo', todoControllers.addToDo)
+
+app.put('/edittodo', todoControllers.editToDo)
+
+app.put('/completedaction', todoControllers.completedAction)
+
+app.delete('/deletetodo/:id', todoControllers.deleteToDo)
+
+// buat controller agar menjadi dinamis
+
+app.listen(port,console.log('listening in port' + port))
+
+
+di todoControllers.js :
+
+const db = require('./database/index.js')
+
+module.exports = {
+    getList: (req,res) =>{
+        db.query(`select * from todo`, (err,result)=>{
+            if(err) throw err
+            res.send(result)
+        })
+    }, 
+    
+    addToDo:  (req,res) =>{
+            db.query(`insert into todo values (0, '${req.body.action}',0)`, (err,result)=>{
+                if(err) throw err
+                res.send(result)
+            })
+    },
+
+    editToDo: (req,res) => {
+        db.query(`update todo set action = '${req.body.action}' where id = '${req.body.id}'`, (err,result)=>{
+            if(err) throw err
+            res.send(result)
+        })
+    },
+
+    completedAction : (req,res) => {
+        db.query(`update todo set isCompleted = 1 where id = '${req.body.id}'`, (err,result)=>{
+            if(err) throw err
+            res.send(result)
+        })
+    },
+
+    deleteToDo : (req,res) =>{
+        var id = req.params.id
+        db.query(`delete from todo where id = ${id}`, (err,result)=>{
+            if(err) throw err
+            res.send(result)
+        })
+    }
+    
+}
+
+
