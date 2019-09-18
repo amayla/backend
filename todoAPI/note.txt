@@ -170,3 +170,26 @@ PASTIKAN PATH KAMU ADA DI FOLDER YANG SESUAI (todolist BUKAN BACKEND!!!!)
 install axios, bootstrap
 
 di index html jangan lupa taro link bootstrapnya (sebelum head)
+
+==================================================17 Sept 2019=======================================================
+
+API endpoint adalah url, ketika dipanggil menjalankan suatu function. functionnya anonymous dalamnya ada 2 parameter req& res
+parameter pertama adalah query sebuah string.
+
+parameter kedua adalah sebuah function(callback, yaitu function yang bertindak sebagai parameter)
+
+
+get sama delete gak bisa pakai body bisanya query,di axios pakai params (post dan put yang bisa pakai req.body)
+
+params axios akan menjadi req.query
+
+params di route API akan menjadi req.params
+
+req.body adalah sebuah object
+
+FE mau kirim sesuatu pakai get (params), di controller operatornya req.query
+
+select * from xx = req.query.dbQuery
+
+
+dbQUery itu sifatnya dinamis, bisa disesuaikan dengan parameter

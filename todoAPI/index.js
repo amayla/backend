@@ -12,6 +12,7 @@ app.get('/', (req,res) =>{
     res.send(`<h1>Selamat datang di API todo JC 10</h1>`)
 }
 )
+app.get('/getlistcompleted', todoControllers.getListByCompleted)
 
 app.get('/getlist', todoControllers.getList)
 
@@ -22,6 +23,8 @@ app.put('/edittodo', todoControllers.editToDo)
 app.put('/completedaction', todoControllers.completedAction)
 
 app.delete('/deletetodo/:id', todoControllers.deleteToDo)
+
+app.get('/getusersbyrole', todoControllers.getUsersByRole)
 
 // buat controller agar menjadi dinamis
 
