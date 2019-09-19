@@ -5,6 +5,8 @@ Read
 Update
 Delete
 
+npm i mysqljs/mysql cors body-parser express
+
 app.get('/', (req,res) =>
 res.send(<h1>Selamat datang di API todo JC 10</h1>))
 
@@ -193,3 +195,5 @@ select * from xx = req.query.dbQuery
 
 
 dbQUery itu sifatnya dinamis, bisa disesuaikan dengan parameter
+
+index.js utama > router > controller > database
