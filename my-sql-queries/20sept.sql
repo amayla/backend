@@ -45,3 +45,7 @@ select * from todo where userId in (select id from users where not role ='premiu
 
 -- cari data doto yang dimiliki oleh user dengan nama seto dan naruto
 select * from todo where userId in (select id from users where username='seto' or username='naruto');
+
+
+use fpaal;
+select * from users;
