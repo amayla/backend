@@ -1,4 +1,14 @@
 const db = require('../database')
+const nodemailer = require('nodemailer')
+
+
+let transporter = nodemailer.createTransport({
+    service:'gmail',
+    auth:{
+        user:'in.orchidfour@gmail.com',
+        pass:'bkmvyezscludbsjf'
+    }
+})
 
 module.exports = {
     login: (req, res) => {
@@ -27,7 +37,7 @@ module.exports = {
     },
     register: (req, res) => {
         let sql = `select * from users where username = '${req.body.username}'`
-        let sql2 = `insert into users value (0, '${req.body.username}', '${req.body.password}', 'free')`
+        let sql2 = `insert into users value (0, '${req.body.username}', '${req.body.email}','${req.body.password}', 'user', '0')`
 
         db.query(sql, (err, result) => {
             if (err) throw err
@@ -46,5 +56,37 @@ module.exports = {
                 })
             }
         })
+    },
+
+    sendVerificationMail: (req,res) =>{
+        let to = req.query.email
+        let username=req.query.username
+        let mailOptions = {
+            from:'Amanda Larasati <in.orchidfour@gmail.com>',
+            to,
+            subject:'Your registration is succeed',
+            html:`<p>Click <a href='http://localhost:1010/auth/verify?username=${username}'>here</a> to verify your account.</p>`
+        }
+        if(to){
+            transporter.sendMail(mailOptions,(err,info)=>{
+                if (err) throw err
+                res.send('Email succeed')
+            })
+        }else{
+            res.send('Email empty')
+        }
+        
+    },
+    verify: (req,res) =>{
+        let username=req.query.username
+        let sql = `update users set verified = 1 where username = '${username}'`
+    
+        db.query(sql, (err,result)=> {
+            if (err) throw err
+            res.send('Congratulations, your account is now verified')
+        })
     }
+
+
+
 }
