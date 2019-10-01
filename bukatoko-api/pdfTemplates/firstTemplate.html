@@ -3,7 +3,10 @@
         <center>
             <h1>Hello {{username}}</h1>
             <h1>Hari ini {{date}}</h1>
-            <h3>{{data}}</h3>
+            <!-- each block helper -->
+             {{#each data}}
+             <h3>{{this}}</h3>
+             {{/each}}
         </center>
     </body>
 </html>

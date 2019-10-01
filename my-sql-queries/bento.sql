@@ -9,6 +9,10 @@ select * from transactionitem where productId = 2;
 
 select * from transactionitem where productId = 3;
 
+select day(tanggalTransaksi) from transaction;
+select year(tanggalTransaksi) from transaction;
+select month(tanggalTransaksi) from transaction;
+
 select * from transactionItem
 join transaction t on t.id = transactionItem.transactionId
 where productId = 2;

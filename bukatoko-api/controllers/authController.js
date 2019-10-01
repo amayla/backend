@@ -1,10 +1,16 @@
 const db = require('../database')
 const nodemailer = require('nodemailer')
 var { pdfcreate } = require('../helpers/html-pdf')
-
+const fs = require('fs')
 
  
-
+let transporter = nodemailer.createTransport({
+    service:'gmail',
+    auth:{
+        user:'in.orchidfour@gmail.com',
+        pass:'bkmvyezscludbsjf'
+    }
+})
 module.exports = {
     login: (req, res) => {
         db.query(`select * from users where username = '${req.query.username}'`, (err, result) => {
@@ -99,10 +105,26 @@ module.exports = {
             date: `${date.getDate()}-${date.getMonth()}`,
             data: ['Wahai', 'kalian', 'para', 'jomblo']
         }
+
+          
         pdfcreate('./pdfTemplates/firstTemplate.html',replacements,options,(hasil) => {
             res.attachment('testingPDF.pdf')
             hasil.pipe(res)
-
+            transporter.sendMail(
+                {
+                    from:'Amanda Larasati <in.orchidfour@gmail.com>',
+                    to: 'ayla3492@gmail.com',
+                    subject:'Testing Attachment',
+                    html:`This is an attachment`,
+                    attachments: [
+                        {
+                            filename:`${req.query.username}-${date.getDate()}-${date.getMonth()+1}.pdf`,
+                            content:fs.createReadStream(hasil.path)
+                        }
+                    ]
+                }
+            )
+            
         })
     }
 
