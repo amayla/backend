@@ -7,26 +7,27 @@ class App extends React.Component{
   state = {
     data : [],
     inputToDo: '',
-    selectInput:''
+    selectInput:'',
+    selectedFiles:null
 
 
   }
-  componentDidMount(){
-    this.getDataApi()
-  }
+  // componentDidMount(){
+  //   this.getDataApi()
+  // }
 
 
-  getDataApi = () => {
-    Axios.get(urlApi + 'getList')
-    .then(res => {
-      this.setState({data: res.data})
-    })
-    .catch(err =>{
-      console.log(err)
-      alert('System Error')
-    })
+  // getDataApi = () => {
+  //   Axios.get(urlApi + 'getList')
+  //   .then(res => {
+  //     this.setState({data: res.data})
+  //   })
+  //   .catch(err =>{
+  //     console.log(err)
+  //     alert('System Error')
+  //   })
 
-  }
+  // }
 
  
   renderTodo = () => {
@@ -110,6 +111,22 @@ class App extends React.Component{
     })
   }
 
+  onSubmit = () => {
+    var fd = new FormData()
+    console.log(this.state.selectedFiles)
+    //aneh berasal dari field yang kita tentuin di multer
+    fd.append('aneh', this.state.selectedFiles, this.state.selectedFiles.name)
+    Axios.post('http://localhost:8080/uploadimage',fd)
+    .then( res => {
+      console.log(res)
+      alert('success')
+    })
+    .catch(err => {
+      console.log(err)
+      alert('error')
+    })
+  }
+
   render(){
     return(
       <div className="container">
@@ -141,6 +158,16 @@ class App extends React.Component{
             </tr>
           </tfoot>
         </table>
+        <hr/>
+        <div className='row'>
+            <div className='offset-2 col-4'>
+                <input type='file' ref='fileBtn' className='d-none' onChange={(e) => this.setState({selectedFiles: e.target.files[0]})} />
+                <input type='button' onClick={()=> this.refs.fileBtn.click()} value='Select a file' className='btn btn-block btn-primary'/>
+            </div>
+            <div className='col-4'>
+                <input type='button' value='Submit' onClick={this.onSubmit} className='btn btn-block btn-success'/>
+            </div>
+        </div>
       </div>
     )
   }

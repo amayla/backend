@@ -3,12 +3,13 @@ var bodyParser = require ('body-parser')
 var cors = require ('cors')
 
 const app = express()
-const port = 1110
+const port = 8080
 var multer = require('multer')
 //const { authRouter } = require('./routers')
 
 app.use(bodyParser.json())
 app.use(cors())
+app.use('/files', express.static('uploads'))
 
 app.get('/', (req, res) => {
     res.send('hehe')
@@ -20,7 +21,7 @@ let multerStorageConfig = multer.diskStorage({
     },
 
     filename : (req,file,cb) => {
-        cb(null, 'myphoto.jpg')
+        cb(null, `PRD-${Date.now()}.${file.mimetype.split('/')[1]}`)
     }
 })
 

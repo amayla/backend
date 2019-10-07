@@ -10,7 +10,8 @@ const {
     getList,
     getListByCompleted,
     getUsersByRole,
-    getTodoJoinUsers
+    getTodoJoinUsers,
+    completedAction
 } = require('./1.controllers/todoControllers')
 //const todoControllers = require('./1.controllers/todoControllers')
 
@@ -40,4 +41,4 @@ app.get('/gettodobyuser', getTodoJoinUsers)
 
 // buat controller agar menjadi dinamis
 
-app.listen(port,console.log('listening in port' + port))
+app.listen(port,console.log('listening in port ' + port))

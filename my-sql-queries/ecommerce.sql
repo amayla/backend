@@ -10,6 +10,5 @@ join cart on users.username = cart.pemilik;
 select * from cart
 join users on cart.userId = users.id;
 
-select * from cart;
 
-select * from users;
+
